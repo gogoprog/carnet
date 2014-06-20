@@ -136,7 +136,7 @@ function onChange(changes, sources)
         col = change[1];
         new_value =  change[3];
 
-        if(nameToTestId[col])
+        if(nameToTestId[col] != null)
         {
             if(row > 1)
             {
