@@ -5,7 +5,7 @@ students = [
 
 tests = [
     {name: "Test1", total: 10},
-    {name: "Test2", total: 12},
+    {name: "Test2", total: 20},
     {name: "Test3", total: 15}
 ];
 
@@ -14,6 +14,28 @@ nameToTestId = {};
 function generateData()
 {
     result = Array();
+
+    {
+        row = Array();
+        
+        row["name"] = "Totals";
+
+        i = 0;
+        total = 0;
+
+        tests.forEach(function(test) {
+            score = test.total;
+            row["result" + i] = score;
+            total += score;
+            ++i;
+        });
+
+        row["total"] = total;
+
+        result.push(row);
+    }
+
+    result.push(Array());
 
     students.forEach(function(student) {
         row = Array();
@@ -102,9 +124,17 @@ function onChange(changes, sources)
         col = change[1];
         new_value =  change[3];
 
-        students[row].results[nameToTestId[col]] = Number(new_value);
-
-        console.log(new_value);
+        if(nameToTestId[col])
+        {
+            if(row > 1)
+            {
+                students[row - 2].results[nameToTestId[col]] = Number(new_value);
+            }
+            else if(row==0)
+            {
+                tests[nameToTestId[col]].total = Number(new_value);
+            }
+        }
 
         generateTable();
     }
