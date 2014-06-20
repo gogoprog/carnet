@@ -1,6 +1,7 @@
 
 students = [
-    {name: "Nissan", results: [ 10, 13, 15 ] }
+    {name: "Foo", results: [ 10, 13, 15 ] },
+    {name: "Bar", results: [ 12, 11, 10 ] }
 ];
 
 tests = [
@@ -44,15 +45,26 @@ function generateData()
 
         i = 0;
         total = 0;
+        score = 0;
 
         tests.forEach(function(test) {
-            score = student.results[i];
-            row["result" + i] = score;
-            total += score;
+            note = student.results[i];
+
+            if(!isNaN(note))
+            {
+                row["result" + i] = note;
+                total += test.total;
+                score += note;
+            }
+            else
+            {
+                row["result" + i] = 'A';
+            }
+
             ++i;
         });
 
-        row["total"] = total;
+        row["total"] = score + '/' + total;
 
         result.push(row);
 
@@ -71,7 +83,7 @@ function generateColHeaders()
         result.push(test.name);
     });
 
-    result.push("Total");
+    result.push("Totals");
 
     return result;
 }
@@ -89,7 +101,7 @@ function generateColumns()
 
     tests.forEach(function(test) {
         name = "result"+i;
-        result.push({ data:name});
+        result.push({ data:name });
         nameToTestId[name] = i;
         ++i;
     });
