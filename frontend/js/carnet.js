@@ -237,6 +237,13 @@ function generateUi()
 
         });
 
+    $("#createAccount")
+        .button()
+        .click(function( event )
+        {
+            createAccount();
+        });
+
     $("#dialogForm").dialog({
         autoOpen: false,
         modal: true
