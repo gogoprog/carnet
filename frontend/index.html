@@ -2,13 +2,24 @@
     <head>
         <script src="js/jquery.min.js"></script>
         <script src="js/jquery.handsontable.full.js"></script>
+        <script src="js/jquery-ui-1.10.4.min.js"></script>
         <script src="js/carnet.js"></script>
         <link rel="stylesheet" media="screen" href="css/jquery.handsontable.full.css">
+        <link href="css/ui-lightness/jquery-ui-1.10.4.css" rel="stylesheet">
+        <link href="css/carnet.css" rel="stylesheet">
     </head>
     <body>
-        <div id="dataTable"></div>
-        <script>
-          $(document).ready(function () { generateTable(); });
-        </script>
+        <div id="menu">
+            <div id="createTest">Add test</div>
+        </div>
+        <br/><br/>
+        <div id="content">
+            <div id="dataTable" style="width:100%; height:auto;"></div>
+        </div>
+
+        <div id="dialogForm">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="dialogValue" class="text ui-widget-content ui-corner-all" />
+        </div>
     </body>
 </html>

@@ -121,7 +121,8 @@ function generateTable()
         minSpareRows: 1,
         colHeaders: generateColHeaders(),
         columns: generateColumns(),
-        afterChange:onChange
+        afterChange:onChange,
+        stretchH: 'all'
     });
 }
 
@@ -140,14 +141,125 @@ function onChange(changes, sources)
         {
             if(row > 1)
             {
-                students[row - 2].results[nameToTestId[col]] = Number(new_value);
+                var s = row - 2;
+
+                if(s < students.length)
+                {
+                    students[s].results[nameToTestId[col]] = Number(new_value);
+                }
+                else
+                {
+                    var student = createStudent();
+
+                    student.name = "Unnamed";
+                    student.results[nameToTestId[col]] = Number(new_value);
+                }
             }
             else if(row==0)
             {
                 tests[nameToTestId[col]].total = Number(new_value);
             }
         }
+        else // Name
+        {
+            if(row > 1)
+            {
+                var s = row - 2;
+
+                if(s < students.length)
+                {
+                    students[s].name = new_value;
+                }
+                else
+                {
+                    var student = createStudent();
+                    student.name = new_value;
+                }
+            }
+        }
 
         generateTable();
     }
 }
+
+function createStudent()
+{
+    var result = {
+        name:"",
+        results:[]
+    }
+
+    students.push(result);
+
+    return result;
+}
+
+function createTest()
+{
+    var result = {
+        name:"Testx",
+        total:10
+    }
+
+    tests.push(result);
+
+    return result;
+}
+
+function generateUi()
+{
+    $("#createTest")
+        .button()
+        .click(function( event )
+        {
+            var dialog = $("#dialogForm");
+
+            dialog.dialog(
+                "option",
+                "buttons", [ { text: "Ok", click: function() {
+                var test = createTest();
+
+                var value = $('#dialogValue')[0].value;
+
+                if(value != "")
+                {
+                    test.name = value;
+                }
+
+                dialog.dialog("close");
+
+                generateTable();
+            } } ] );
+
+            dialog.dialog("option", "title", "Enter test title");
+
+            $("#dialogForm").dialog("open");
+
+        });
+
+    $("#dialogForm").dialog({
+        autoOpen: false,
+        modal: true
+    });
+}
+
+$(document).ready(function () {
+
+    $.extend($.ui.dialog.prototype.options, { 
+        create: function() {
+            var $this = $(this);
+
+            // focus first button and bind enter to it
+            $this.parent().find('.ui-dialog-buttonpane button:first').focus();
+            $this.keypress(function(e) {
+                if( e.keyCode == $.ui.keyCode.ENTER ) {
+                    $this.parent().find('.ui-dialog-buttonpane button:first').click();
+                    return false;
+                }
+            });
+        } 
+    });
+
+    generateUi();
+    generateTable();
+});
