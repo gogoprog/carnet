@@ -1,22 +1,38 @@
+
 function createUser(res, params)
 {
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end(JSON.stringify(params));
+    var db = require("./db");
+
+    params['checked'] = true;
+
+    return params;
+}
+
+var handlers = {
+    "/user/create" : createUser
 }
 
 function handle(req, res)
 {
-    var db = require("./db");
-
-    if(req.url.indexOf("/user/create") == 0)
+    for(var k in handlers)
     {
-        var params = require('url').parse(req.url, true).query;
+        if(req.url.indexOf(k) == 0)
+        {
+            var alldata = '';
 
-        createUser(res, params);
-    }
-    else
-    {
-        res.end();
+            req.on('data', function(data) {
+                alldata += data;
+            });
+
+            req.on('end', function() {
+                res.writeHead(200, {'Content-Type': 'application/json'});
+                res.end(
+                    JSON.stringify(
+                        handlers[k](res, JSON.parse(alldata))
+                        )
+                    );
+            });
+        }
     }
 }
 
