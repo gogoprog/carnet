@@ -3,6 +3,8 @@
         <script src="js/jquery.min.js"></script>
         <script src="js/jquery.handsontable.full.js"></script>
         <script src="js/jquery-ui-1.10.4.min.js"></script>
+        <script src="js/jquery.md5.js"></script>
+        <script src="js/ui.js"></script>
         <script src="js/carnet.js"></script>
         <script src="js/user.js"></script>
         <link rel="stylesheet" media="screen" href="css/jquery.handsontable.full.css">
@@ -12,7 +14,7 @@
     <body>
         <div id="menu">
             <div id="createTest">Add test</div>
-            <div id="createAccount">create-account-dev</div>
+            <div id="createAccount">Sign-up</div>
         </div>
         <br/><br/>
         <div id="content">
@@ -22,6 +24,13 @@
         <div id="dialogForm">
             <label for="name">Name</label>
             <input type="text" name="name" id="dialogValue" class="text ui-widget-content ui-corner-all" />
+        </div>
+
+        <div id="signupForm">
+            <label for="mail">E-Mail</label>
+            <input type="text" name="mail" id="signupMail" class="text ui-widget-content ui-corner-all" />
+            <label for="pwd">Password</label>
+            <input type="password" name="pwd" id="signupPassword" class="text ui-widget-content ui-corner-all" />
         </div>
     </body>
 </html>

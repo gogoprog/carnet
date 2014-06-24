@@ -1,11 +1,39 @@
 
+function writeResponse(res, params)
+{
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.end(
+        JSON.stringify(
+            params
+            )
+        );
+}
+
 function createUser(res, params)
 {
     var db = require("./db");
 
-    params['checked'] = true;
+    console.log(params);
 
-    return params;
+    db.users.find({email:params.email}, function(err, users) {
+        if(err)
+        {
+            writeResponse(res, { error: err });
+            return;
+        }
+
+        if(!users.length)
+        {
+            db.users.save(params);
+
+            writeResponse(res, { success: true });
+        }
+        else
+        {
+            writeResponse(res, { already_exists: true });
+        }
+
+    });
 }
 
 var handlers = {
@@ -25,12 +53,7 @@ function handle(req, res)
             });
 
             req.on('end', function() {
-                res.writeHead(200, {'Content-Type': 'application/json'});
-                res.end(
-                    JSON.stringify(
-                        handlers[k](res, JSON.parse(alldata))
-                        )
-                    );
+                handlers[k](res, JSON.parse(alldata))
             });
         }
     }

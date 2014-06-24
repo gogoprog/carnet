@@ -1,13 +1,15 @@
-function createAccount()
+function createAccount(email, pwd)
 {
-    var output_data = { user:"testUser", values:[1,4,8]};
+    var output_data = {
+        email:email,
+        password:$.md5(pwd)
+    };
 
     $.post(
         "user/create",
         JSON.stringify(output_data),
         function( data ) {
             console.log(data);
-            console.log(data.values);
         }
         );
 }
